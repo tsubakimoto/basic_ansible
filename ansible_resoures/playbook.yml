@@ -18,3 +18,18 @@
       file: dest=/var/www/html owner=vagrant recurse=yes
     - name: copy index.html
       copy: src=./index.html dest=/var/www/html/index.html owner=vagrant
+    - name: install php packages
+      yum: name={{item}} state=latest
+      with_items:
+        - php
+        - php-devel
+        - php-mbstring
+        - php-mysql
+      notify:
+        - restart apache
+    - name: copy hello.php
+      copy: src=./hello.php dest=/var/www/html/hello.php owner=vagrant
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
+
