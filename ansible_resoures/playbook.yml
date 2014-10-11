@@ -33,3 +33,18 @@
     - name: restart apache
       service: name=httpd state=restarted
 
+- hosts: db
+  sudo: yes
+  tasks:
+    - name: install mysql
+      yum: name={{item}} state=latest
+      with_items:
+        - mysql-server
+        - MySQL-python
+    - name: start mysql and enabled
+      service: name=mysqld state=started enabled=yes
+    - name: create a database
+      mysql_db: name=mydb state=present
+    - name: create a user for mydb
+      mysql_user: name=dbuser password=dbpassword priv=mydb.*:ALL state=present
+
