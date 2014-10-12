@@ -16,6 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     node.vm.box = "chef/centos-6.5"
     node.vm.hostname = "host"
     node.vm.network :private_network, ip: "192.168.43.51"
+    node.vm.provision :shell, :path => "./vagrant_resources/bootstrap.sh"
   end
   
   config.vm.define "web" do |node|
